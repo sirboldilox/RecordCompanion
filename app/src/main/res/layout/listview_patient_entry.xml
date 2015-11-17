@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/patientListIcon"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:src="@mipmap/ic_person_black_24dp"
+        android:contentDescription="@string/menu_patient_list_icon"
+        android:contextClickable="false" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/menu_patient_list"
+        android:id="@+id/patientEntryName"
+        android:textSize="32sp"
+        android:textAlignment="center"
+        android:clickable="false"
+        android:enabled="true" />
+
+</LinearLayout>
