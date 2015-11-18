@@ -2,6 +2,7 @@ package parker.matt.recordcompanion;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.view.View;
 import android.widget.RadioButton;
@@ -43,6 +44,7 @@ public class AddPatient extends AppCompatActivity {
             gender = Patient.GENDER_FEMALE;
         }
 
+        Log.d("PR", "Patient: " + firstName + " " + lastName + " " + dateOfBirth);
         patientRecord = new Patient(firstName, lastName, dateOfBirth, gender);
 
         // Add object to the database

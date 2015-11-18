@@ -15,10 +15,10 @@ import android.util.Log;
 public class PatientsTable extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "health_records";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
     private static final String TABLE_NAME ="Patients";
-    private static final String COL_ID ="id";
+    private static final String COL_ID ="_id";
     private static final String COL_FIRST_NAME ="first_name";
     private static final String COL_LAST_NAME = "last_name";
     private static final String COL_DOB ="date_of_birth";
@@ -40,6 +40,7 @@ public class PatientsTable extends SQLiteOpenHelper {
                         + COL_DOB + " dateOfBirth text not null, "
                         + COL_GENDER + " gender integer not null) "
         );
+
     }
 
     @Override
@@ -51,6 +52,11 @@ public class PatientsTable extends SQLiteOpenHelper {
     public boolean addPatient(Patient patient) {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues cv=new ContentValues();
+
+        Log.d("AddPR", "Patient: "
+                + patient.firstName + " "
+                + patient.lastName + " "
+                + patient.dateOfBirth);
 
         cv.put(COL_FIRST_NAME, patient.firstName);
         cv.put(COL_LAST_NAME, patient.lastName);
@@ -69,11 +75,31 @@ public class PatientsTable extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Log.d("Database", "getAllNames");
-        rCursor = db.query(TABLE_NAME, new String[]{COL_ID, COL_LAST_NAME},
+        rCursor = db.query(TABLE_NAME, new String[]{COL_ID, COL_LAST_NAME, COL_FIRST_NAME},
                 null, null, null, null, null);
-        db.close();
 
         return rCursor;
+    }
+
+    // Returns a Patient record
+    public Patient getPatient(int id) {
+        Patient patient;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor pCursor = db.query(TABLE_NAME,
+                null,
+                "_id=?",
+                new String[]{Integer.toString(id)},
+                null, null, null, null);
+
+        patient = new Patient(id,
+                pCursor.getString(pCursor.getColumnIndexOrThrow("first_name")),
+                pCursor.getString(pCursor.getColumnIndexOrThrow("last_name")),
+                pCursor.getString(pCursor.getColumnIndexOrThrow("date_of_birth")),
+                pCursor.getInt(pCursor.getColumnIndexOrThrow("gender")));
+
+        pCursor.close();
+        return patient;
     }
 
 }

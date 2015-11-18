@@ -17,12 +17,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/menu_patient_list"
-        android:id="@+id/patientEntryName"
         android:textSize="32sp"
-        android:textAlignment="center"
         android:clickable="false"
-        android:enabled="true" />
+        android:enabled="true"
+        android:id="@+id/patientEntryName"/>
 
 </LinearLayout>

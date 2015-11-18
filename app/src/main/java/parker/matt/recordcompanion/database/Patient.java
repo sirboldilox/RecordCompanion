@@ -1,5 +1,6 @@
 package parker.matt.recordcompanion.database;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -10,25 +11,24 @@ public class Patient {
     public final static int GENDER_MALE = 0;
     public final static int GENDER_FEMALE = 1;
 
-    private int _id;
-    private String _firstName;
-    private String _lastName;
-    private String _dateOfBirth;
-    private int _gender;
+    public int _id;
+    public String firstName;
+    public String lastName;
+    public String dateOfBirth;
+    public int gender;
 
     public Patient(int id, String firstName, String lastName, String dateOfBirth, int gender) {
-        _id = id;
-        _firstName = firstName;
-        _lastName = lastName;
-        _dateOfBirth = dateOfBirth;
-        _gender = gender;
+        this._id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
     }
 
     public Patient(String firstName, String lastName, String dateOfBirth, int gender) {
-        _firstName = firstName;
-        _lastName = lastName;
-        _dateOfBirth = dateOfBirth;
-        _gender = gender;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
     }
-
 }
