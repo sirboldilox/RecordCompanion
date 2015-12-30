@@ -40,6 +40,11 @@
             android:label="Add Patient"
             android:parentActivityName=".PatientList" >
         </activity>
+        <activity
+            android:name=".PatientRecord"
+            android:label="Patient Record"
+            android:parentActivityName=".PatientList" >
+        </activity>
     </application>
 
 </manifest>

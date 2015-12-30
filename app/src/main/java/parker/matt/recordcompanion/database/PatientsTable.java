@@ -69,19 +69,18 @@ public class PatientsTable extends SQLiteOpenHelper {
     }
 
     // Returns a Cursor with all the patient names in the database
-    public Cursor getAllNames()
+    public Cursor getAll()
     {
         Cursor rCursor;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Log.d("Database", "getAllNames");
-        rCursor = db.query(TABLE_NAME, new String[]{COL_ID, COL_LAST_NAME, COL_FIRST_NAME},
-                null, null, null, null, null);
+        Log.d("Database", "getAll");
+        rCursor = db.query(TABLE_NAME, null, null, null, null, null, null);
 
         return rCursor;
     }
 
-    // Returns a Patient record
+    // Returns a Patient record by id
     public Patient getPatient(int id) {
         Patient patient;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -101,5 +100,4 @@ public class PatientsTable extends SQLiteOpenHelper {
         pCursor.close();
         return patient;
     }
-
 }

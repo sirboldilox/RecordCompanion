@@ -1,6 +1,7 @@
 package parker.matt.recordcompanion.database;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -30,5 +31,18 @@ public class Patient {
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    // Calculate age from date of birth
+    public String getAge() {
+        int age = 0;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar date_dob = Calendar.getInstance();
+        Calendar date_now = Calendar.getInstance();
+
+        //date_dob.setTime(dateFormat.parse(this.dateOfBirth));
+        //age = (date_now.get(Calendar.YEAR) - date_dob.get(Calendar.YEAR));
+
+        return Integer.toString(age);
     }
 }
