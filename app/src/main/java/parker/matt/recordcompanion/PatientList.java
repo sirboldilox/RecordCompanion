@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,9 +17,11 @@ import parker.matt.recordcompanion.database.PatientCursorAdapter;
 public class PatientList extends AppCompatActivity {
 
     // Database connection handler
-    protected ListView patientListView;
     protected PatientsTable dbAdapter;
     protected Cursor dbCursor;
+
+    // List view
+    protected ListView patientListView;
     protected PatientCursorAdapter pLVAdapter;
 
     @Override
@@ -31,10 +34,12 @@ public class PatientList extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Setup listview
-        patientListView = (ListView) findViewById(R.id.patientList);
+        // Setup database
         dbAdapter = new PatientsTable(this);
         dbCursor = dbAdapter.getAll();
+
+        // Setup ListView and PatientCursorAdapter
+        patientListView = (ListView) findViewById(R.id.patientList);
         pLVAdapter = new PatientCursorAdapter(this, dbCursor);
 
         patientListView.setAdapter(pLVAdapter);
@@ -43,11 +48,8 @@ public class PatientList extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                View item = patientListView.getChildAt(position);
-
-
-                System.out.println("" + position);
+                Log.d("PatientList", String.format("Item %d was clicked.", position));
+                PatientRecord.start(getApplicationContext(), position);
             }
         });
     }
@@ -55,10 +57,11 @@ public class PatientList extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("onResume");
+        Log.d("PatientList", "onResume");
 
         // Reload the database
         dbCursor = dbAdapter.getAll();
+        pLVAdapter.changeCursor(dbCursor);
         pLVAdapter.notifyDataSetChanged();
     }
 
@@ -75,13 +78,12 @@ public class PatientList extends AppCompatActivity {
         patietnListDebug.setText(debugString);
     }
 
-    // Handle click on add patient button
+    /**
+     * Handle clicking on add patient button
+     */
     public void onClickAddPatient(View view) {
         Intent addPatientIntent = new Intent(getApplicationContext(), AddPatient.class);
         startActivity(addPatientIntent);
-
-        // Reload Patient list on exit
-        //populatePatientList();
     }
 }
 
