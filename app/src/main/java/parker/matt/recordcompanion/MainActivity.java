@@ -5,10 +5,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import parker.matt.recordcompanion.database.SyncHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,4 +65,24 @@ public class MainActivity extends AppCompatActivity {
         startActivity(patientListIntent);
     }
 
+    public void onClickDatabaseSync(View view) {
+        // Run the database sync and update the field
+        final TextView syncStatus = (TextView) findViewById(R.id.databaseSyncStatusText);
+        //final String URLString = "http://boldilox.co.uk:8081";
+        final String URLString = "http://hrsdb0:8080";
+
+        // Setup database URL
+        URL databaseURL;
+        try {
+            databaseURL = new URL(URLString);
+        } catch(MalformedURLException url_exc) {
+            Log.d("MainActivity", "Bad URL: " + URLString);
+            syncStatus.setText("Bad database URL");
+            return;
+        }
+
+        // Start the sync
+        SyncHandler syncHandler = new SyncHandler(this, databaseURL, syncStatus);
+        syncHandler.execute();
+    }
 }

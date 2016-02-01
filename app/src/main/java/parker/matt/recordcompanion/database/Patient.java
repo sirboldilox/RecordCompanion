@@ -1,5 +1,11 @@
 package parker.matt.recordcompanion.database;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,5 +50,32 @@ public class Patient {
         //age = (date_now.get(Calendar.YEAR) - date_dob.get(Calendar.YEAR));
 
         return Integer.toString(age);
+    }
+
+    public String getGenderString() {
+        if (gender == GENDER_MALE) {
+            return "Male";
+        } else {
+            return "Female";
+        }
+    }
+
+    /**
+     * Returns the object as a JSON encoded object
+     */
+    public JSONObject toJSON()
+    {
+        JSONObject rJson;
+        try {
+            rJson = new JSONObject('{'
+                    + "\"first_name\": " + this.firstName + ','
+                    + "\"last_name\": " + this.lastName + ','
+                    + "\"gender\": " + Integer.toString(this.gender) + ','
+                    + "\"date_of_birth\": " + this.dateOfBirth + '}');
+            return rJson;
+        } catch(JSONException json_exc) {
+            Log.d("Patient", "IOException when converting record to JSON");
+            return null;
+        }
     }
 }

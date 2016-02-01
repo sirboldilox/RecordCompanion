@@ -1,5 +1,6 @@
 package parker.matt.recordcompanion;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -48,8 +49,13 @@ public class PatientList extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("PatientList", String.format("Item %d was clicked.", position));
-                PatientRecord.start(getApplicationContext(), position);
+                Long patient_id = pLVAdapter.getItemId(position);
+                Log.d("PatientList", String.format("Item %d was clicked: _id: %d.", position, patient_id));
+
+                // Start the activity
+                Intent pRecordIntent = new Intent(getApplicationContext(), PatientRecord.class);
+                pRecordIntent.putExtra(PatientRecord.EXTRA_PATIENT_ID, patient_id);
+                startActivity(pRecordIntent);
             }
         });
     }
