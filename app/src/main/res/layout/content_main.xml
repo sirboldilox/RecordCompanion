@@ -49,7 +49,9 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:onClick="onClickDatabaseSync">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -57,20 +59,27 @@
             android:id="@+id/newRecordIcon"
             android:minHeight="50dp"
             android:minWidth="50dp"
-            android:src="@mipmap/ic_person_black_24dp" />
+            android:clickable="false"
+            android:src="@mipmap/ic_loop_black_36dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="New Record"
-            android:id="@+id/newRecordText"
+            android:text="Sync Database"
+            android:id="@+id/databaseSyncText"
             android:textSize="32dp"
             android:textAlignment="center"
-            android:clickable="true"
+            android:clickable="false"
             android:enabled="true" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="354dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/databaseSyncStatusText" />
 
     <View style="@style/Divider"/>
 

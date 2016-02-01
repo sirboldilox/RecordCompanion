@@ -11,8 +11,7 @@
         android:minHeight="50dp"
         android:minWidth="50dp"
         android:src="@mipmap/ic_person_black_24dp"
-        android:contentDescription="@string/menu_patient_list_icon"
-        android:contextClickable="false" />
+        android:contentDescription="@string/menu_patient_list_icon" />
 
     <TextView
         android:layout_width="match_parent"
