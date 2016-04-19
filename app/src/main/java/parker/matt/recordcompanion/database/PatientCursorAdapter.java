@@ -32,8 +32,8 @@ public class PatientCursorAdapter extends CursorAdapter {
         // Find fields to populate in inflated template
         TextView tvName = (TextView) view.findViewById(R.id.patientEntryName);
         // Extract properties from cursor
-        String name = cursor.getString(cursor.getColumnIndexOrThrow("first_name"));
-        name += " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_FIRST_NAME));
+        name += " " + cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LAST_NAME));
         // Populate fields with extracted properties
         tvName.setText(name);
     }

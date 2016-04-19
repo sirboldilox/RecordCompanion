@@ -1,6 +1,5 @@
 package parker.matt.recordcompanion;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,20 +9,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import parker.matt.recordcompanion.database.PatientsTable;
+import parker.matt.recordcompanion.database.DatabaseHelper;
 import parker.matt.recordcompanion.database.PatientCursorAdapter;
 
 public class PatientList extends AppCompatActivity {
 
+    private static final String LOG_TAG = "PatientList";
+
     // Database connection handler
-    protected PatientsTable dbAdapter;
-    protected Cursor dbCursor;
+    private DatabaseHelper dbAdapter;
+    private Cursor dbCursor;
 
     // List view
-    protected ListView patientListView;
-    protected PatientCursorAdapter pLVAdapter;
+    private ListView patientListView;
+    private PatientCursorAdapter pLVAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,8 @@ public class PatientList extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Setup database
-        dbAdapter = new PatientsTable(this);
-        dbCursor = dbAdapter.getAll();
+        dbAdapter = new DatabaseHelper(this);
+        dbCursor = dbAdapter.getAllPatients();
 
         // Setup ListView and PatientCursorAdapter
         patientListView = (ListView) findViewById(R.id.patientList);
@@ -50,7 +50,7 @@ public class PatientList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Long patient_id = pLVAdapter.getItemId(position);
-                Log.d("PatientList", String.format("Item %d was clicked: _id: %d.", position, patient_id));
+                Log.d(LOG_TAG, String.format("Item %d was clicked: _id: %d.", position, patient_id));
 
                 // Start the activity
                 Intent pRecordIntent = new Intent(getApplicationContext(), PatientRecord.class);
@@ -66,22 +66,9 @@ public class PatientList extends AppCompatActivity {
         Log.d("PatientList", "onResume");
 
         // Reload the database
-        dbCursor = dbAdapter.getAll();
+        dbCursor = dbAdapter.getAllPatients();
         pLVAdapter.changeCursor(dbCursor);
         pLVAdapter.notifyDataSetChanged();
-    }
-
-    public void debug_test() {
-        TextView patietnListDebug = (TextView) findViewById(R.id.patientListDebug);
-        Cursor debugCursor;
-        String debugString = "Debug";
-
-        // Test database
-        debugCursor = dbAdapter.getAll();
-        for (String element: debugCursor.getColumnNames())
-            debugString += " " + element;
-
-        patietnListDebug.setText(debugString);
     }
 
     /**

@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="bitalino_address"
+        android:title="@string/pref_bitalino_address_title"
+        android:summary="@string/pref_bitalino_address_summary"
+        android:defaultValue="@string/pref_bitalino_address_default"  />
+
+    <ListPreference
+        android:key="bitalino_channel"
+        android:title="@string/pref_bitalino_channel_title"
+        android:summary="@string/pref_bitalino_channel_summary"
+        android:entries="@array/pref_bitalino_channel_entries"
+        android:entryValues="@array/pref_bitalino_channel_entries"
+        android:defaultValue="@string/pref_bitalino_channel_default" />
+
+</PreferenceScreen>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/patientListIcon"
+        android:minHeight="24dp"
+        android:minWidth="24dp"
+        android:src="@mipmap/ic_input_black_18dp"
+        android:contentDescription="@string/menu_patient_list_icon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/menu_patient_list"
+        android:textSize="16sp"
+        android:clickable="false"
+        android:enabled="true"
+        android:id="@+id/biometricTypeEntryName"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp" />
+
+</LinearLayout>

@@ -1,8 +1,11 @@
 package parker.matt.recordcompanion;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -10,15 +13,17 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import parker.matt.recordcompanion.database.SyncHandler;
+import parker.matt.recordcompanion.sync.SyncHandler;
+import parker.matt.recordcompanion.sync.SyncService1;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +31,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
@@ -51,32 +47,46 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // Open the settings activity
         if (id == R.id.action_settings) {
+            Log.d(LOG_TAG, "Settings option clicked");
+
+            Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+
     public void onClickPatientList(View view) {
-        // Handle launching the Patient list activity
+        // Handle launching the PatientDBModel list activity
         Intent patientListIntent = new Intent(getApplicationContext(), PatientList.class);
         startActivity(patientListIntent);
     }
 
+    /**
+     * Manually run a database sync
+     * @param view
+     */
     public void onClickDatabaseSync(View view) {
         // Run the database sync and update the field
         final TextView syncStatus = (TextView) findViewById(R.id.databaseSyncStatusText);
-        //final String URLString = "http://boldilox.co.uk:8081";
-        final String URLString = "http://hrsdb0:8080";
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Intent intent = new Intent(this, SyncService1.class);
+        startService(intent);
+        Log.d(LOG_TAG, "Starting Sync service");
 
         // Setup database URL
+        String URLString = preferences.getString("sync_url", "NULL");
         URL databaseURL;
+
         try {
             databaseURL = new URL(URLString);
         } catch(MalformedURLException url_exc) {
-            Log.d("MainActivity", "Bad URL: " + URLString);
+            Log.e(LOG_TAG, "Bad URL: " + URLString);
             syncStatus.setText("Bad database URL");
             return;
         }
@@ -84,5 +94,11 @@ public class MainActivity extends AppCompatActivity {
         // Start the sync
         SyncHandler syncHandler = new SyncHandler(this, databaseURL, syncStatus);
         syncHandler.execute();
+    }
+
+    public void onClickBluetoothTest(View view) {
+        // Test the bluetooth connection
+        Intent bluetoothTestIntent = new Intent(getApplicationContext(), BluetoothTest.class);
+        startActivity(bluetoothTestIntent);
     }
 }

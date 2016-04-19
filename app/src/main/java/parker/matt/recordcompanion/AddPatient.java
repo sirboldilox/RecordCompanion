@@ -2,15 +2,14 @@ package parker.matt.recordcompanion;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 // Local imports
-import parker.matt.recordcompanion.database.Patient;
-import parker.matt.recordcompanion.database.PatientsTable;
+import parker.matt.recordcompanion.database.DatabaseHelper;
+import parker.matt.recordcompanion.models.Patient;
 
 public class AddPatient extends AppCompatActivity {
 
@@ -32,7 +31,7 @@ public class AddPatient extends AppCompatActivity {
         String firstName, lastName, dateOfBirth;
         int gender;
 
-        // Build Patient object
+        // Build PatientDBModel object
         firstName = patientFirstName.getText().toString();
         lastName = patientLastName.getText().toString();
         dateOfBirth = patientDOB.getText().toString();
@@ -44,12 +43,11 @@ public class AddPatient extends AppCompatActivity {
             gender = Patient.GENDER_FEMALE;
         }
 
-        Log.d("PR", "Patient: " + firstName + " " + lastName + " " + dateOfBirth);
         patientRecord = new Patient(firstName, lastName, dateOfBirth, gender);
 
         // Add object to the database
-        PatientsTable dbCon = new PatientsTable(this);
-        dbCon.addPatient(patientRecord);
+        DatabaseHelper dbCon = new DatabaseHelper(this);
+        dbCon.addPatient(patientRecord, true);
 
         finish();
     }
