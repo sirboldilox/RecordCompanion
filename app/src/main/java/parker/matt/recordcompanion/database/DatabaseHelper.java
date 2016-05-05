@@ -11,9 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 11;
 
     // Time format
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd kk:mm:ss");
 
     // Table names
     private static final String TABLE_PATIENTS   = "Patients";
@@ -448,7 +446,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     public static String getTimestring() {
-        return dateFormat.format(new Date());
+        return DATE_FORMAT.format(new Date());
     }
 
     /**

@@ -26,8 +26,6 @@ public class PatientRecord extends AppCompatActivity {
     private DatabaseHelper dbAdapter;
 
     // Listview
-    private ListView recordBioTypeLV;
-    private ListView recentBioLV;
     private BioTypeCursorAdapter btLVAdapter;
     private RecentBioCursorAdapter recentBioLVAdapter;
 
@@ -46,14 +44,14 @@ public class PatientRecord extends AppCompatActivity {
         createRecord(dbAdapter.getPatient((int) patient_id));
 
         // Populate recent recordings
-        recentBioLV = (ListView) findViewById(R.id.recordBioRecentList);
+        ListView recentBioLV = (ListView) findViewById(R.id.recordBioRecentList);
         recentBioLVAdapter = new RecentBioCursorAdapter(this, dbAdapter.getPatientBiometrics((int) patient_id));
         recentBioLV.setEmptyView(findViewById(R.id.recentBioEntryEmpty));
         recentBioLV.setAdapter(recentBioLVAdapter);
 
 
         // Setup ListView and adapter for recording
-        recordBioTypeLV = (ListView) findViewById(R.id.recordBioTypeList);
+        ListView recordBioTypeLV = (ListView) findViewById(R.id.recordBioTypeList);
         btLVAdapter = new BioTypeCursorAdapter(this, dbAdapter.getAllBioTypes());
 
         recordBioTypeLV.setAdapter(btLVAdapter);
@@ -105,15 +103,6 @@ public class PatientRecord extends AppCompatActivity {
         patientName.setText(String.format("%s", patient.getNameString()));
         patientID.setText(String.format("ID: %d", patient.id));
         patientGender.setText(patient.getGenderString());
-        patientAge.setText(String.format("Age %s", patient.getAgeString()));
-    }
-
-    /**
-     * Expand the record biometric options
-     * @param view
-     */
-    public void onClickRecordBiometric(View view) {
-//        final TextView biometricText = (TextView) findViewById(R.id.patientRecordBiometric);
-
+        patientAge.setText(String.format("Age: %s", patient.getAgeString()));
     }
 }

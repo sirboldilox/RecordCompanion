@@ -40,9 +40,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
-            android:hint="DD/MM/YYYY"
+            android:hint="YYYY/MM/DD"
             android:ems="10"
-            android:id="@+id/patientBirthday" />
+            android:id="@+id/patientBirthday"
+            android:focusable="false" />
 
         <TextView
             android:layout_width="wrap_content"

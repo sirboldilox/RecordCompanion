@@ -45,7 +45,7 @@ public class BitalinoService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        // Read local settings
+       // Read local settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         bitalinoAddress = preferences.getString("bitalino_address", "NULL");
         bitalinoChannel = Integer.parseInt(preferences.getString("bitalino_channel", "0"));

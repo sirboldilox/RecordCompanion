@@ -39,4 +39,5 @@ proguard/
 
 # Android Studio captures folder
 captures/
->>>>>>> 4a05539bc91628fdac43caabdbf7dcf3110ca154
+
+*.png

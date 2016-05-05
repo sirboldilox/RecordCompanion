@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import java.util.Vector;
 
 import parker.matt.recordcompanion.bitalino.BitalinoCallback;
 import parker.matt.recordcompanion.bitalino.BitalinoManager;
@@ -64,7 +65,7 @@ public class RecordECG extends AppCompatActivity {
     private GraphView graphView;
     private LineGraphSeries<DataPoint> series = null;
     private int sampleCount = 0;
-    private static final int GRAPH_MAX_POINTS = 8192;   // 8 seconds of data
+    private static final int GRAPH_MAX_POINTS = 8000;   // 8 seconds of data
     /**
      *  Broadcast receiver for bluetooth events
      */
@@ -119,10 +120,6 @@ public class RecordECG extends AppCompatActivity {
      */
     private class GraphCallback implements BitalinoCallback {
 
-        public void handleConnected(boolean connected) {
-
-        }
-
         /**
          * Update the graph on a read callback
          * @param frames   Array of frames read from device
@@ -134,6 +131,12 @@ public class RecordECG extends AppCompatActivity {
                 public void run() {
                     writeFrames(fFrames);
                     updateGraph(fFrames);
+
+                    // Re-enable recording samples
+                    final TextView infoText = (TextView)  findViewById(R.id.recordECGInfo);
+                    final Button runButton = (Button) findViewById(R.id.recordECGButton);
+                    runButton.setEnabled(true);
+                    infoText.setText("Complete");
                 }
             });
         }
@@ -205,9 +208,15 @@ public class RecordECG extends AppCompatActivity {
         registerReceiver(btBroadcastReceiver, intentFilter);
     }
 
+    /**
+     * Stop and destroy the bitalino manager if initialised
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (bitalinoManager != null) {
+            bitalinoManager.stop();
+        }
         unregisterReceiver(btBroadcastReceiver);
     }
 
@@ -215,17 +224,17 @@ public class RecordECG extends AppCompatActivity {
      * Run the Bluetooth test
      * @param view
      */
-    public void onClickRunToggle(View view) {
+    public void onClickRun(View view) {
 
         final TextView infoText = (TextView)  findViewById(R.id.recordECGInfo);
         final ImageView btIcon  = (ImageView) findViewById(R.id.recordECGBTIcon);
         final Button runButton  = (Button)    findViewById(R.id.recordECGButton);
 
-        runButton.setText("Run");
+        runButton.setEnabled(false);
+        infoText.setText("Connecting");
 
         // Setup BitalinoManager if null
         if (bitalinoManager == null) {
-
             BluetoothDevice btDev;
 
             if (!btAdapter.isEnabled()) {
@@ -233,6 +242,8 @@ public class RecordECG extends AppCompatActivity {
                 btIcon.setImageResource(R.mipmap.ic_bluetooth_disabled_black_36dp);
                 Toast.makeText(getApplicationContext(), "Please enable bluetooth.", Toast.LENGTH_SHORT)
                         .show();
+
+                runButton.setEnabled(true);
                 return;
             }
 
@@ -244,6 +255,9 @@ public class RecordECG extends AppCompatActivity {
                 String msg = String.format("Invalid device address: %s", bitalinoAddress);
                 Log.d(LOG_TAG, msg);
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+                infoText.setText("Failed");
+                runButton.setEnabled(true);
                 return;
             }
 
@@ -251,13 +265,11 @@ public class RecordECG extends AppCompatActivity {
             bitalinoManager = new BitalinoManager(btDev, bitalinoCallbacks);
         }
 
-        // Update button state
-        runButton.setText("Stop");
-
         // Start and read forever
         bitalinoManager.start();
         bitalinoManager.waitForConnection();
 
+        infoText.setText("Recording data from BITalino");
         bitalinoManager.read(GRAPH_MAX_POINTS);
     }
 
@@ -300,15 +312,17 @@ public class RecordECG extends AppCompatActivity {
      */
     private void updateGraph(BITalinoFrame frames[]) {
 
+        // Display 10 frames for every second of recording
+        int total = (frames.length / BitalinoManager.SAMPLING_FREQ) * 10;
+        int inc = (frames.length / total);
+
         // First run
         if (series == null) {
-            DataPoint[] dataPoints = new DataPoint[frames.length];
+            DataPoint[] dataPoints = new DataPoint[total];
 
-            for (int i = 0; i < frames.length; i++) {
-                dataPoints[i] = new DataPoint(i, frames[i].getAnalog(0));
+            for (int i = 0; i < total; i++) {
+                dataPoints[i] = new DataPoint(i*inc, frames[i*inc].getAnalog(0));
             }
-
-            sampleCount = frames.length;
 
             // Add new data to graph
             series = new LineGraphSeries<>(dataPoints);
@@ -316,10 +330,9 @@ public class RecordECG extends AppCompatActivity {
 
         } else {
             // Append data
-            for (int i = 0; i < frames.length; i++) {
-                series.appendData(new DataPoint(sampleCount + i, frames[i].getAnalog(0)), false, GRAPH_MAX_POINTS) ;
+            for (int i = 0; i < total; i++) {
+                series.appendData(new DataPoint(sampleCount++*inc, frames[i*inc].getAnalog(0)), false, GRAPH_MAX_POINTS);
             }
-            sampleCount += frames.length;
         }
     }
 }

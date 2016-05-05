@@ -8,13 +8,6 @@ import com.bitalino.comm.BITalinoFrame;
 public interface BitalinoCallback {
 
     /**
-     * Abstract function to handle connect attempts
-     * @param connected If the connection was successful
-     */
-    void handleConnected(boolean connected);
-
-
-    /**
      *  Abstract function to handle read frames using threads
      *  @param frames   Array of frames read from device
      */

@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import parker.matt.recordcompanion.database.DatabaseHelper;
+
 /**
  * Data model for basic patient records
  *
@@ -18,8 +20,8 @@ public class Patient {
 
     private static final String LOG_TAG = "Patient";
 
-    public final static int GENDER_MALE = 0;
-    public final static int GENDER_FEMALE = 1;
+    public final static int GENDER_MALE = 1;
+    public final static int GENDER_FEMALE = 2;
 
     public int id;
     public String first_name;
@@ -54,7 +56,7 @@ public class Patient {
      */
     public String getAgeString() {
             int age;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat dateFormat = DatabaseHelper.DATE_FORMAT;
             Calendar date_dob = Calendar.getInstance();
             Calendar date_now = Calendar.getInstance();
 

@@ -66,9 +66,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Run"
+        android:text="Record sample"
         android:id="@+id/recordECGButton"
-        android:onClick="onClickRunToggle"
+        android:onClick="onClickRun"
         android:layout_marginTop="16dp" />
 
 </LinearLayout>

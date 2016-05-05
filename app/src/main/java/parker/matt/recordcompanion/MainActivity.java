@@ -1,8 +1,5 @@
 package parker.matt.recordcompanion;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,7 +16,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import parker.matt.recordcompanion.sync.SyncHandler;
-import parker.matt.recordcompanion.sync.SyncService1;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,10 +71,6 @@ public class MainActivity extends AppCompatActivity {
         final TextView syncStatus = (TextView) findViewById(R.id.databaseSyncStatusText);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Intent intent = new Intent(this, SyncService1.class);
-        startService(intent);
-        Log.d(LOG_TAG, "Starting Sync service");
-
         // Setup database URL
         String URLString = preferences.getString("sync_url", "NULL");
         URL databaseURL;
@@ -94,11 +86,5 @@ public class MainActivity extends AppCompatActivity {
         // Start the sync
         SyncHandler syncHandler = new SyncHandler(this, databaseURL, syncStatus);
         syncHandler.execute();
-    }
-
-    public void onClickBluetoothTest(View view) {
-        // Test the bluetooth connection
-        Intent bluetoothTestIntent = new Intent(getApplicationContext(), BluetoothTest.class);
-        startActivity(bluetoothTestIntent);
     }
 }

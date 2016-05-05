@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +55,6 @@ public class RecordBiometric extends AppCompatActivity {
 
         // Allow / digit for inputting Blood pressure
         if (biometricType.id == DatabaseHelper.ID_BP) {
-            Log.d(LOG_TAG, "Got BP");
             tvInput.setKeyListener(DigitsKeyListener.getInstance("1234567890./"));
         }
     }

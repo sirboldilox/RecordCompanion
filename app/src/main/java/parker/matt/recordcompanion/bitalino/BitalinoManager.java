@@ -105,6 +105,7 @@ public class BitalinoManager {
                     bitalino.start();
                     Log.d(LOG_TAG, "BITalino started");
 
+                    reading = true;
                     if (frameCount > 0) {
                         biTalinoFrames = bitalino.read(frameCount);
                         btCallbacks.handleRead(biTalinoFrames);
@@ -118,6 +119,7 @@ public class BitalinoManager {
                     // Stop the device
                     bitalino.stop();
                     Log.d(LOG_TAG, "BITalino stopped");
+                    reading = false;
 
                 } catch (BITalinoException e) {
                     Log.e(LOG_TAG, "BitalinoException: ", e);
@@ -139,6 +141,21 @@ public class BitalinoManager {
         }
     }
 
+    /**
+     * Interrupt the threads if running to stop the manager
+     */
+    public void stop() {
+        if (conThread != null) {
+            conThread.interrupt();
+        }
+        if (readThread != null) {
+            readThread.interrupt();
+        }
+    }
+
+    /**
+     * Block until the connection thread exits or is interrupted
+     */
     public void waitForConnection() {
         if (conThread != null) {
             try {
@@ -146,6 +163,8 @@ public class BitalinoManager {
             } catch (InterruptedException int_e) {
 
             }
+            conThread = null;
+            connected = false;
         }
     }
 
@@ -167,5 +186,15 @@ public class BitalinoManager {
     public boolean isConnected() {
         return this.connected;
     }
+
+    /**
+     * Checks if the device is reading
+     * @return reading state
+     */
+    public boolean isReading() {
+        return this.reading;
+    }
+
+
 
 }
